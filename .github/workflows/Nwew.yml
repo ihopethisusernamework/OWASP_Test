@@ -1,0 +1,25 @@
+name: ZAP Security Scan
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write 
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan testphp.vulnweb.com
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'http://testphp.vulnweb.com'
+          cmd_options: '-a'
